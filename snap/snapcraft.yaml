@@ -1,0 +1,39 @@
+name: slic3r-prusa
+version: git
+summary: G-code generator for Prusa 3D printers
+description: |
+  Slic3r takes 3D models (STL, OBJ, AMF) and converts them into G-code
+  instructions for 3D printers. This is the Prusa edition which contains
+  customisations for Prusa 3D printers.
+icon: resources/icons/Slic3r_192px.png
+grade: devel
+confinement: strict
+parts:
+  slic3r-prusa:
+    plugin: cmake
+    source: .
+    build-packages:
+      - g++
+      - libboost-all-dev
+      - libcurl4-gnutls-dev
+      - libextutils-cppguess-perl
+      - libextutils-typemaps-default-perl
+      - libextutils-xspp-perl
+      - libtbb-dev
+      - libwx-perl
+    install: |
+      cp -a ../src/resources $SNAPCRAFT_PART_INSTALL/bin/
+    stage-packages:
+      - libclass-accessor-perl
+      - libfindbin-libs-perl
+      - liblocal-lib-perl
+      - libmoo-perl
+      - libwww-perl
+      - libwx-perl
+      - libopengl-perl
+      - libwx-glcanvas-perl
+    after: [desktop-gtk2]
+apps:
+  slic3r-prusa:
+    command: env LC_ALL=C PERL5LIB=$SNAP/usr/share/perl/5.22.1:$SNAP/usr/share/perl5:$SNAP/lib/slic3r-prusa3d:$SNAP/usr/lib/x86_64-linux-gnu/perl/5.22.1:$SNAP/usr/lib/x86_64-linux-gnu/perl5/5.22 desktop-launch $SNAP/bin/slic3r-prusa3d
+    plugs: [x11, opengl]
